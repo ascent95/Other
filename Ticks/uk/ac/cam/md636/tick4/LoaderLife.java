@@ -110,7 +110,11 @@ public class LoaderLife {
             }
 
             if (args.length == 2) {
-                Pattern p = results.get(Integer.parseInt(args[1])); //Uses the index into the list to select the desired pattern.
+                int index = Integer.parseInt(args[1]);
+                if (index < 0 || index >= results.size()) { // Takes into account the case where the index is a negative number and also where it is too large.
+                    index = 0;
+                }
+                Pattern p = results.get(index); //Uses the index into the list to select the desired pattern.
                 boolean[][] world = new boolean[p.getHeight()][p.getWidth()];
                 p.initialise(world);
                 play(world);

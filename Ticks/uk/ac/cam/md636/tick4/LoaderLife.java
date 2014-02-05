@@ -110,11 +110,7 @@ public class LoaderLife {
             }
 
             if (args.length == 2) {
-                int index = Integer.parseInt(args[1]);
-                if (index < 0 || index >= results.size()) { // Takes into account the case where the index is a negative number and also where it is too large.
-                    index = 0;
-                }
-                Pattern p = results.get(index); //Uses the index into the list to select the desired pattern.
+                Pattern p = results.get(Integer.parseInt(args[1])); //Uses the index into the list to select the desired pattern.
                 boolean[][] world = new boolean[p.getHeight()][p.getWidth()];
                 p.initialise(world);
                 play(world);
@@ -131,6 +127,8 @@ public class LoaderLife {
             System.out.println(e.getMsg());
         } catch (IOException e) {
             System.out.println("Wrong type of file"); // This may need to change
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Bad index");
         }
     }
 }

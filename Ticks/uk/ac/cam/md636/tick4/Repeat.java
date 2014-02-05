@@ -8,8 +8,11 @@ public class Repeat {
 		if (args.length != 2) {
 			return "Error: insufficient arguments";
 		}
+		int rep = Integer.parseInt(args[1]);
+		if (rep < 1) {
+		    return "Error: second argument is not a positive integer";
+		}
 		try {
-			int rep = Integer.parseInt(args[1]);
 			String repeated = "";
 			for (int i = 0; i < rep; i++) {
 				if (i == rep - 1) {

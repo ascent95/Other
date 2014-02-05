@@ -11,9 +11,6 @@ public class Pattern {
     private int startRow;
     private String cells;
 
-    // TODO: write public "get" methods for EACH of the fields above;
-    // for instance "getName" should be written as:
-
     public String getName() {
         return name;
     }
@@ -49,10 +46,9 @@ public class Pattern {
     public void setOriginal(String original) {
         this.original = original;
     }
+    
 
     public Pattern(String format) throws PatternFormatException {
-        // TODO: initialise all fields of this class using contents of "format"
-        // to determine the correct values.
         setOriginal(format); // For use later when I have to print out the
                              // pattern to select.
         String[] formatSplit = format.split(":");
@@ -85,11 +81,9 @@ public class Pattern {
         cells = formatSplit[6]; // This gets dealt with in the initialise
                                 // method.
     }
+    
 
     public void initialise(boolean[][] world) throws PatternFormatException {
-        // TODO: update the values in the 2D array representing the state of
-        // "world"
-        // as expressed by the contents of the field "cells".
         String[] newCells = cells.split(" ");
         for (int i = 0; i < newCells.length; i++) {           
             char[] row = newCells[i].toCharArray();

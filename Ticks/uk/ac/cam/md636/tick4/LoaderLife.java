@@ -127,8 +127,8 @@ public class LoaderLife {
             System.out.println(e.getMsg());
         } catch (IOException e) {
             System.out.println("Wrong type of file"); // This may need to change
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
             System.out.println("Bad index");
-        }
+        } 
     }
 }

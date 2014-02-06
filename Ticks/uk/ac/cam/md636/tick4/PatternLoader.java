@@ -12,23 +12,30 @@ import java.util.List;
 
 public class PatternLoader {
 
-    public static List<Pattern> load(Reader r) throws IOException, PatternFormatException {
+    public static List<Pattern> load(Reader r) throws IOException,
+            PatternFormatException {
         BufferedReader buff = new BufferedReader(r);
         List<Pattern> resultList = new LinkedList<Pattern>();
         String line = null;
         while ((line = buff.readLine()) != null) {
-            resultList.add(new Pattern(line));
+            try {
+                resultList.add(new Pattern(line));
+            } catch (PatternFormatException e) {
+                // This is to skip over malformed entries.
+            }
         }
         return resultList;
     }
 
-    public static List<Pattern> loadFromURL(String url) throws IOException, PatternFormatException {
+    public static List<Pattern> loadFromURL(String url) throws IOException,
+            PatternFormatException {
         URL destination = new URL(url);
         URLConnection conn = destination.openConnection();
         return load(new InputStreamReader(conn.getInputStream()));
     }
 
-    public static List<Pattern> loadFromDisk(String filename) throws IOException, PatternFormatException {
+    public static List<Pattern> loadFromDisk(String filename)
+            throws IOException, PatternFormatException {
         return load(new FileReader(filename));
     }
 }

@@ -82,13 +82,13 @@ public class Pattern {
                                 // method.
     }
 
-    public void initialise(boolean[][] world) throws PatternFormatException {
+    public void initialise(World nWorld) throws PatternFormatException {
         String[] newCells = cells.split(" ");
         for (int i = 0; i < newCells.length; i++) {           
             char[] row = newCells[i].toCharArray();
             for (int j = 0; j < row.length; j++) {
                 if (row[j] == '1') {
-                    world[i + startRow][j + startCol] = true;
+                    nWorld.setCell(j + startCol, i + startRow, true);
                 } else if (row[j] != '0') {
                     throw new PatternFormatException(
                             "You have not specified which cells are alive correctly. The data contains values which are not either 0 or 1." + original);

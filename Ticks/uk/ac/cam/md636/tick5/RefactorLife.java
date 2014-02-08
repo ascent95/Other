@@ -31,7 +31,8 @@ public class RefactorLife {
 
             if (args.length == 2) {
                 Pattern p = results.get(Integer.parseInt(args[1])); 
-                ArrayWorld world = new ArrayWorld(p.getWidth(), p.getHeight());
+                //TestPackedWorld world = new TestPackedWorld(p.getWidth(), p.getHeight());
+                TestPackedWorld world = new TestPackedWorld();
                 p.initialise(world);
                 play(world);
             } else {

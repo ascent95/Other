@@ -37,7 +37,7 @@ public class TestArrayWorld implements World {
     }
 
     public void setCell(int col, int row, boolean alive) { // Used method from RefactorLife.
-        if (row >= 0 || row < cells.length || col >= 0 || col < cells[row].length) {
+        if (row >= 0 && row < cells.length && col >= 0 && col < cells[row].length) {
             cells[row][col] = alive;
         }
     }

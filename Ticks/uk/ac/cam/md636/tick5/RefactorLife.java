@@ -18,30 +18,68 @@ public class RefactorLife {
         }
     }
 
-    public static void main(String[] args) {
-
+    private static List<Pattern> getResults(String path) throws IOException, PatternFormatException {
         List<Pattern> results = null;
+        if (path.startsWith("http://")) {
+            results = PatternLoader.loadFromURL(path);
+        } else {
+            results = PatternLoader.loadFromDisk(path);
+        }
+        return results;
+    }
 
+    private static void printOptions(List<Pattern> results) {
+        int i = 0; // For producing the list
+        for (Pattern p : results) {
+            System.out.println(i + ")" + p.getOriginal());
+            i++;
+        }
+    }
+
+    public static void main(String[] args) { //I didn't see the skeleton piece of code but I have independenty developed a similar solution.
+        World world = null; //The type of TestArrayWorld or TestPackedWorld is chosen later.
         try {
-            if (args[0].startsWith("http://")) {
-                results = PatternLoader.loadFromURL(args[0]);
-            } else {
-                results = PatternLoader.loadFromDisk(args[0]);
+            if (args.length == 3) {
+                if (args[0].startsWith("--")) {
+                    Pattern p = getResults(args[1]).get(Integer.parseInt(args[2])); // The case
+                                                                                    // where there
+                                                                                    // is a storage
+                                                                                    // mechanism
+                                                                                    // defined.
+                    if (args[0].equals("--array")) {
+                        world = new TestArrayWorld(p.getWidth(), p.getHeight());
+                    } else if (args[0].equals("--long")) {
+                        world = new TestPackedWorld();
+                    } else { // --somthingrandom
+                        System.out.println("You haven't supplied a valid storage mechanism.");
+                    }
+                    p.initialise(world);
+                    play(world);
+                }
             }
 
-            if (args.length == 2) {
-                Pattern p = results.get(Integer.parseInt(args[1])); 
-                //TestPackedWorld world = new TestPackedWorld(p.getWidth(), p.getHeight());
-                TestPackedWorld world = new TestPackedWorld();
-                p.initialise(world);
-                play(world);
-            } else {
-                int i = 0; // For producing the list
-                for (Pattern p : results) {
-                    System.out.println(i + ")" + p.getOriginal());
-                    i++;
+            else if (args.length == 2) {
+                if (args[0].startsWith("--")) { // It doesn't matter what type because either
+                                                // there is no list or no selector.
+                    printOptions(getResults(args[1]));
+                } else {
+                    Pattern p = getResults(args[0]).get(Integer.parseInt(args[1]));
+                    world = new TestArrayWorld(p.getWidth(), p.getHeight());
+                    p.initialise(world);
+                    play(world);
                 }
+            }
 
+            else if (args.length == 1) {
+                printOptions(getResults(args[0]));
+            } 
+            
+            else if (args.length == 0) {
+                System.out.println("You haven't entered any arguments.");
+            }
+            
+            else {
+                System.out.println("You've entered too many arguments.");
             }
 
         } catch (PatternFormatException e) {
@@ -49,7 +87,7 @@ public class RefactorLife {
         } catch (IOException e) {
             System.out.println("Wrong type of file"); // This may need to change
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            System.out.println("Bad index");
+            System.out.println("Bad index. Make sure it is a number that correctly selects a pattern.");
         }
     }
 }

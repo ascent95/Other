@@ -6,13 +6,16 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import uk.ac.cam.md636.tick5.WorldViewer;
 
 public class RefactorLife {
     
     public static void play(World world) throws IOException {
+        WorldViewer viewer = new WorldViewer();
         int userResponse = 0;
         Writer w = new OutputStreamWriter(System.out);
         while (userResponse != 'q') {
+            viewer.show(world);
             world.print(w);
             userResponse = System.in.read();
             world = world.nextGeneration(0);
@@ -51,6 +54,8 @@ public class RefactorLife {
                         world = new ArrayWorld(p.getWidth(), p.getHeight());
                     } else if (args[0].equals("--long")) {
                         world = new PackedWorld();
+                    } else if (args[0].equals("--aging")) {
+                        world = new AgingWorld(p.getWidth(), p.getHeight());
                     } else { // --somthingrandom
                         System.out.println("You haven't supplied a valid storage mechanism.");
                     }
@@ -61,7 +66,7 @@ public class RefactorLife {
 
             else if (args.length == 2) {
                 if (args[0].startsWith("--")) { // It doesn't matter what type because either
-                                                // there is no list or no selector.
+                                                // there is no list or no selector. If no list then an exception will be thrown which is fine.
                     printOptions(getResults(args[1]));
                 } else {
                     Pattern p = getResults(args[0]).get(Integer.parseInt(args[1]));

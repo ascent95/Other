@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.List;
 
 public class RefactorLife {
+    
     public static void play(World world) throws IOException {
         int userResponse = 0;
         Writer w = new OutputStreamWriter(System.out);
@@ -37,7 +38,7 @@ public class RefactorLife {
     }
 
     public static void main(String[] args) { //I didn't see the skeleton piece of code but I have independenty developed a similar solution.
-        World world = null; //The type of TestArrayWorld or TestPackedWorld is chosen later.
+        World world = null; //The type of ArrayWorld or PackedWorld is chosen later.
         try {
             if (args.length == 3) {
                 if (args[0].startsWith("--")) {
@@ -47,9 +48,9 @@ public class RefactorLife {
                                                                                     // mechanism
                                                                                     // defined.
                     if (args[0].equals("--array")) {
-                        world = new TestArrayWorld(p.getWidth(), p.getHeight());
+                        world = new ArrayWorld(p.getWidth(), p.getHeight());
                     } else if (args[0].equals("--long")) {
-                        world = new TestPackedWorld();
+                        world = new PackedWorld();
                     } else { // --somthingrandom
                         System.out.println("You haven't supplied a valid storage mechanism.");
                     }
@@ -64,7 +65,7 @@ public class RefactorLife {
                     printOptions(getResults(args[1]));
                 } else {
                     Pattern p = getResults(args[0]).get(Integer.parseInt(args[1]));
-                    world = new TestArrayWorld(p.getWidth(), p.getHeight());
+                    world = new ArrayWorld(p.getWidth(), p.getHeight());
                     p.initialise(world);
                     play(world);
                 }
@@ -87,6 +88,7 @@ public class RefactorLife {
         } catch (IOException e) {
             System.out.println("Wrong type of file"); // This may need to change
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            System.out.println(e);
             System.out.println("Bad index. Make sure it is a number that correctly selects a pattern.");
         }
     }

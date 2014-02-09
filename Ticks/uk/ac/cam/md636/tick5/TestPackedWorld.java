@@ -110,7 +110,6 @@ public class TestPackedWorld implements World {
     }
 
     private TestPackedWorld nextGeneration() {
-        // Construct a new TestArrayWorld object to hold the next generation:
         TestPackedWorld world = new TestPackedWorld(this);
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {

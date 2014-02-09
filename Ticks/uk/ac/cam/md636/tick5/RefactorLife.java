@@ -6,6 +6,8 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import uk.ac.cam.acr31.life.World;
 import uk.ac.cam.md636.tick5.WorldViewer;
 
 public class RefactorLife {

@@ -1,5 +1,7 @@
 package uk.ac.cam.md636.tick5;
 
+import uk.ac.cam.acr31.life.World;
+
 public class Pattern {
 
     private String original;

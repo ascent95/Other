@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import uk.ac.cam.acr31.life.World;
+
 public class WorldViewer extends JFrame {
 
 	private static final long serialVersionUID = -3555304350705631171L;

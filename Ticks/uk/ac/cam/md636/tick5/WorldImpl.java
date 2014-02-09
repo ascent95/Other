@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import uk.ac.cam.acr31.life.World;
+
 public abstract class WorldImpl implements World {
 
     private int width;

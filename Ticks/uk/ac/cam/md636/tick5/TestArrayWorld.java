@@ -1,6 +1,6 @@
 package uk.ac.cam.md636.tick5;
 
-import uk.ac.cam.md636.tick5.World;
+import uk.ac.cam.acr31.life.World;
 import java.io.Writer;
 import java.awt.Graphics;
 import java.io.PrintWriter;

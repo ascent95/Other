@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.List;
 
 import uk.ac.cam.acr31.life.World;
-import uk.ac.cam.md636.tick5.WorldViewer;
+import uk.ac.cam.acr31.life.WorldViewer;
 
 public class RefactorLife {
     

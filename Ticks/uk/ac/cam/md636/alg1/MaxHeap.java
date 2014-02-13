@@ -18,14 +18,11 @@ public class MaxHeap {
     }
 
     public void insert(char x) {
-        int i = hp.size();
         hp.add(x); // Is this ok or is it better to use Character.valueOf here?
-        while (x > hp.get((i - 1) / 2)) { //While x is larger than its parent:
+        for (int i = hp.size()-1; x > hp.get((i-1)/2); i= (i-1)/2) {
             hp.set(i, hp.get((i - 1) / 2)); //Set the value where x currently is to the value at i.
             hp.set((i - 1) / 2, x); //Set the parent value to x.
-            i = (i - 1) / 2; //Set i to the index of the next parent.
         }
-
     }
 
     public char getMax() {

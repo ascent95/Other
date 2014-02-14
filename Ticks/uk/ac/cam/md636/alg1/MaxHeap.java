@@ -19,39 +19,67 @@ public class MaxHeap {
 
     public void insert(char x) {
         hp.add(x); // Is this ok or is it better to use Character.valueOf here?
-        for (int i = hp.size()-1; x > hp.get((i-1)/2); i= (i-1)/2) {
-            hp.set(i, hp.get((i - 1) / 2)); //Set the value where x currently is to the value at i.
-            hp.set((i - 1) / 2, x); //Set the parent value to x.
+        for (int i = hp.size() - 1; x > hp.get((i - 1) / 2); i = (i - 1) / 2) {
+            hp.set(i, hp.get((i - 1) / 2)); // Set current value to same as at i.
+            hp.set((i - 1) / 2, x); // Set the parent value to x.
         }
     }
 
-    public char getMax() {
+    public char getMax() { // Must solve the problem where there is only 1 child.
         char max;
         if (hp.size() == 0) {
             return '_';
-        } else {
+        } else if (hp.size() == 1) {
+            char tmp = hp.get(0);
+            hp.remove(0);
+            return tmp;
+        } else if (hp.size() == 2) {
+            char tmp = hp.get(0);
+            hp.set(0, hp.get(1));
+            hp.remove(1);
+            return tmp;
+        }
+
+        else {
             max = hp.get(0);
-            hp.set(0, hp.get(hp.size() - 1)); // Sets the root to the value of the last element.]
+            hp.set(0, hp.get(hp.size() - 1)); // Sets the root to the value of the last
+                                              // element.]
             hp.remove(hp.size() - 1); // Removes the last element.
             int i = 0;
-            while (hp.get(i) < hp.get(2 * i + 1) || hp.get(i) < hp.get(2 * i + 2)) { // Tests to see
-                                                                                     // whether BOTH
-                                                                                     // children
-                                                                                     // obey heap
-                                                                                     // property.
-                if (hp.get(2 * i + 1) > hp.get(2 * i + 2)) {
-                    char tmp = hp.get(i); // Parent value
-                    hp.set(i, hp.get(2 * i + 1));
-                    hp.set(2 * i + 1, tmp);
-                } else {
-                    char tmp = hp.get(i); // Parent value
-                    hp.set(i, hp.get(2 * i + 2));
-                    hp.set(2 * i + 2, tmp);
-                    // TODO: Swap i with 2i+2
+            while (i <= (hp.size() - 2) / 2 && hp.size() % 2 == 1
+                    && (hp.get(i) < hp.get(2 * i + 1) || hp.get(i) < hp.get(2 * i + 2))) {
+                // Tests to see whether BOTH children obey heap property. If they do then the
+                // while loop terminates. Also checks whether i is less than half way through
+                // the list, otherwise it won't have any children. Also checks whether list
+                // length is even. If it is then we know the last parent has two children.
+                if (hp.get(2 * i + 1) > hp.get(2 * i + 2)) { // If left greater than right.
+                    swapL(i);
+                    i = 2 * i + 1;
+                } else { // If right child is greater than left
+                    swapR(i);
+                    i = 2 * i + 2;
                 }
             }
+            if (i == (hp.size() - 2) / 2 && hp.size() % 2 == 0
+                    && hp.get(i) < hp.get(2 * i + 1)) {
+                // Checks whether i is parent of last element AND list length is even so it has
+                // 1 child only AND that last child needs to be swapped.
+                swapL(i);
+            }
+            return max;
         }
-        return max;
+    }
+
+    public void swapL(int i) {
+        char tmp = hp.get(i); // Parent value
+        hp.set(i, hp.get(2 * i + 1));
+        hp.set(2 * i + 1, tmp);
+    }
+
+    public void swapR(int i) {
+        char tmp = hp.get(i); // Parent value
+        hp.set(i, hp.get(2 * i + 2));
+        hp.set(2 * i + 2, tmp);
     }
 
     public static void main(String[] args) {

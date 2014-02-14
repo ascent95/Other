@@ -25,7 +25,7 @@ public class MaxHeap {
         }
     }
 
-    public char getMax() { // Must solve the problem where there is only 1 child.
+    public char getMax() { 
         char max;
         if (hp.size() == 0) {
             return '_';
@@ -38,33 +38,35 @@ public class MaxHeap {
             hp.set(0, hp.get(1));
             hp.remove(1);
             return tmp;
-        }
-
-        else {
+        } else {
             max = hp.get(0);
             hp.set(0, hp.get(hp.size() - 1)); // Sets the root to the value of the last
                                               // element.]
             hp.remove(hp.size() - 1); // Removes the last element.
             int i = 0;
-            while (i <= (hp.size() - 2) / 2 && hp.size() % 2 == 1
+            while (i <= (hp.size() - 2) / 2
                     && (hp.get(i) < hp.get(2 * i + 1) || hp.get(i) < hp.get(2 * i + 2))) {
                 // Tests to see whether BOTH children obey heap property. If they do then the
                 // while loop terminates. Also checks whether i is less than half way through
                 // the list, otherwise it won't have any children. Also checks whether list
                 // length is even. If it is then we know the last parent has two children.
-                if (hp.get(2 * i + 1) > hp.get(2 * i + 2)) { // If left greater than right.
-                    swapL(i);
-                    i = 2 * i + 1;
-                } else { // If right child is greater than left
-                    swapR(i);
-                    i = 2 * i + 2;
+
+                if (i != (hp.size() - 2) / 2 || hp.size() % 2 == 1) { // Proceed as normal
+                    if (hp.get(2 * i + 1) > hp.get(2 * i + 2)) { // If left greater than right.
+                        swapL(i);
+                        i = 2 * i + 1;
+                    } else { // If right child is greater than left
+                        swapR(i);
+                        i = 2 * i + 2;
+                    }
+                } else {
+                    if (hp.get(i) < hp.get(2 * i + 1)) {
+                        // Checks whether i is parent of last element AND list length is even
+                        // so it has
+                        // 1 child only AND that last child needs to be swapped.
+                        swapL(i);
+                    }
                 }
-            }
-            if (i == (hp.size() - 2) / 2 && hp.size() % 2 == 0
-                    && hp.get(i) < hp.get(2 * i + 1)) {
-                // Checks whether i is parent of last element AND list length is even so it has
-                // 1 child only AND that last child needs to be swapped.
-                swapL(i);
             }
             return max;
         }

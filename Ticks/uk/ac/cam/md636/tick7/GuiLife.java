@@ -21,7 +21,7 @@ import uk.ac.cam.acr31.life.World;
 
 public class GuiLife extends JFrame {
     PatternPanel patternPanel = new PatternPanel();
-    ControlPanel controlPanel = new ControlPanel();
+    ControlPanel controlPanel; // Initialised in createControlPanel method.
     GamePanel gamePanel = new GamePanel();
 
     // Added code for tick 7
@@ -87,22 +87,30 @@ public class GuiLife extends JFrame {
         return result;
     }
 
-    private PatternPanel createPatternPanel() { 
+    private PatternPanel createPatternPanel() {
         PatternPanel result = new PatternPanel();
         patternPanel = result; // Setting field to reference this new instance.
         addBorder(result, Strings.PANEL_PATTERN);
         return result;
     }
 
-    private JComponent createControlPanel() { 
-        controlPanel = new ControlPanel(){
-         protected void onSpeedChange(int value) {
-          playTimer.setDelay(1+(100-value)*10);
-         }
+    private JComponent createControlPanel() {
+        controlPanel = new ControlPanel() {
+            protected void onSpeedChange(int value) {
+                playTimer.setDelay(1 + (100 - value) * 10);
+            }
+
+            protected void onStepChange(int value) {
+                timeStep = value;
+            }
+            
+            protected void onZoomChange(int value) {
+                gamePanel.setZoom(value);
+            }
         };
-        addBorder(controlPanel,Strings.PANEL_CONTROL);
+        addBorder(controlPanel, Strings.PANEL_CONTROL);
         return controlPanel;
-      }
+    }
 
     public static void main(String[] args) {
         GuiLife gui = new GuiLife();

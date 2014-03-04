@@ -14,7 +14,7 @@ import uk.ac.cam.acr31.life.World;
 
 public abstract class ControlPanel extends JPanel {
 
-    private JSlider zoomSlider;
+    private JSlider zoomSlider; 
     private JSlider stepSlider;
     private JSlider speedSlider;
     private JRadioButton longButton;
@@ -22,6 +22,8 @@ public abstract class ControlPanel extends JPanel {
     private JRadioButton agingButton;
 
     protected abstract void onSpeedChange(int value); // Added in tick 7
+    protected abstract void onStepChange(int value); // Added in tick 7
+    protected abstract void onZoomChange(int value); // Added in tick 7
 
     private JSlider createNewSlider(int min, int max, int start, String s) {
         Box panel = Box.createHorizontalBox();
@@ -43,10 +45,26 @@ public abstract class ControlPanel extends JPanel {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        zoomSlider = createNewSlider(1, 20, 1, Strings.CONTROL_ZOOM);
+        zoomSlider = createNewSlider(1, 20, 10, Strings.CONTROL_ZOOM); //Start set to 10
         add(Box.createVerticalStrut(10)); // add 10px of extra space
+        
+        zoomSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                if (!zoomSlider.getValueIsAdjusting())
+                    onZoomChange(zoomSlider.getValue());
+            }
+        });        
+        
         stepSlider = createNewSlider(0, 10, 0, Strings.CONTROL_STEP);
         add(Box.createVerticalStrut(10)); // add 10px of extra space
+        
+        stepSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                if (!stepSlider.getValueIsAdjusting())
+                    onStepChange(stepSlider.getValue());
+            }
+        });
+        
         speedSlider = createNewSlider(0, 100, 0, Strings.CONTROL_SPEED);
         add(Box.createVerticalStrut(10)); // add 10px of extra space
 

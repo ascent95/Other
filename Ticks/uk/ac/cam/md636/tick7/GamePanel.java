@@ -13,6 +13,10 @@ public class GamePanel extends JPanel {
     private int width = 1; // Width of game board in pixels
     private int height = 1;// Height of game board in pixels
     private World current = null;
+    
+    public void setZoom(int newZoom) {
+        zoom = newZoom;
+    }
 
     public Dimension getPreferredSize() {
         return new Dimension(width, height);

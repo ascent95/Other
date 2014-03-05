@@ -8,7 +8,7 @@ public class Strings {
     public static final String BUTTON_SOURCE_NONE = "None";
     public static final String BUTTON_SOURCE_FILE = "File";
     public static final String BUTTON_SOURCE_LIBRARY = "Library";
-    public static final String BUTTON_SOURCE_FOURSTAR = "4* Submissions";
+    public static final String BUTTON_SOURCE_THREESTAR = "4* Submissions";
     public static final String CONTROL_ZOOM = "Zoom";
     public static final String CONTROL_STEP = "Step";
     public static final String CONTROL_SPEED = "Speed";

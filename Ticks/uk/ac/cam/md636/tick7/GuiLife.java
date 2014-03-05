@@ -10,21 +10,40 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.EtchedBorder;
+import javax.swing.JFileChooser;
+import java.io.File;
+import java.io.FileReader;
 
 import uk.ac.cam.acr31.life.World;
 
 public class GuiLife extends JFrame {
-    PatternPanel patternPanel = new PatternPanel();
+    PatternPanel patternPanel;
     ControlPanel controlPanel; // Initialised in createControlPanel method.
     GamePanel gamePanel = new GamePanel();
 
     // Added code for tick 7
+    private void resetWorld() {
+        Pattern current = patternPanel.getCurrentPattern();
+        world = null;
+        if (current != null) {
+            try {
+                world = controlPanel.initialiseWorld(current);
+            } catch (PatternFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error initialising world",
+                        "An error occurred when initialising the world. " + e.getMessage(),
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        gamePanel.display(world);
+        repaint();
+    }
 
     private World world;
     private int timeDelay = 500; // delay between updates (millisecs)
@@ -82,16 +101,63 @@ public class GuiLife extends JFrame {
     }
 
     private SourcePanel createSourcePanel() {
-        SourcePanel result = new SourcePanel();
+        SourcePanel result = new SourcePanel() {
+            protected boolean setSourceFile() {
+                JFileChooser chooser = new JFileChooser();
+                int returnVal = chooser.showOpenDialog(this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File f = chooser.getSelectedFile();
+                    try {
+                        List<Pattern> list = PatternLoader.load(new FileReader(f));
+                        patternPanel.setPatterns(list);
+                        resetWorld();
+                        return true;
+                    } catch (IOException ioe) {
+                    }
+                }
+                return false;
+            }
+
+            protected boolean setSourceNone() {
+                world = null;
+                patternPanel.setPatterns(null);
+                resetWorld();
+                return true;
+            }
+
+            protected boolean setSourceLibrary() {
+                String u = "http://www.cl.cam.ac.uk/teaching/current/ProgJava/nextlife.txt";
+                return setSourceWeb(u);
+            }
+
+            protected boolean setSourceThreeStar() {
+                String u = "http://www.cl.cam.ac.uk/teaching/current/ProgJava/competition.txt";
+                return setSourceWeb(u);
+            }
+
+            private boolean setSourceWeb(String url) {
+                try {
+                    List<Pattern> list = PatternLoader.loadFromURL(url);
+                    patternPanel.setPatterns(list);
+                    resetWorld();
+                    return true;
+                } catch (IOException ioe) {
+                }
+                return false;
+            }
+        };
         addBorder(result, Strings.PANEL_SOURCE);
         return result;
     }
 
     private PatternPanel createPatternPanel() {
-        PatternPanel result = new PatternPanel();
-        patternPanel = result; // Setting field to reference this new instance.
-        addBorder(result, Strings.PANEL_PATTERN);
-        return result;
+        patternPanel = new PatternPanel() { 
+            protected void onPatternChange() {
+                resetWorld();
+            }
+        };
+        addBorder(patternPanel, Strings.PANEL_PATTERN);
+        return patternPanel;
     }
 
     private JComponent createControlPanel() {
@@ -103,7 +169,7 @@ public class GuiLife extends JFrame {
             protected void onStepChange(int value) {
                 timeStep = value;
             }
-            
+
             protected void onZoomChange(int value) {
                 gamePanel.setZoom(value);
             }
@@ -114,17 +180,8 @@ public class GuiLife extends JFrame {
 
     public static void main(String[] args) {
         GuiLife gui = new GuiLife();
-        try {
-            String url = "http://www.cl.cam.ac.uk/teaching/current/ProgJava/life.txt";
-            List<Pattern> list = PatternLoader.loadFromURL(url);
-            gui.patternPanel.setPatterns(list);
-            gui.world = gui.controlPanel.initialiseWorld(list.get(1));
-            gui.gamePanel.display(gui.world);
-        } catch (IOException ioe) {
-        } catch (PatternFormatException poe) {
-            System.out.println(poe.getMessage());
-        }
         gui.playTimer.start();
+        gui.resetWorld();
         gui.setVisible(true);
     }
 }

@@ -11,6 +11,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import uk.ac.cam.acr31.life.World;
+import uk.ac.cam.acr31.life.hash.HashWorld;
 
 public abstract class ControlPanel extends JPanel {
 
@@ -20,6 +21,7 @@ public abstract class ControlPanel extends JPanel {
     private JRadioButton longButton;
     private JRadioButton arrayButton;
     private JRadioButton agingButton;
+    private JRadioButton hashButton;
 
     protected abstract void onSpeedChange(int value); // Added in tick 7
     protected abstract void onStepChange(int value); // Added in tick 7
@@ -49,7 +51,7 @@ public abstract class ControlPanel extends JPanel {
         add(Box.createVerticalStrut(10)); // add 10px of extra space
         
         zoomSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+            public void stateChanged(ChangeEvent e) { //Anonymous class
                 if (!zoomSlider.getValueIsAdjusting())
                     onZoomChange(zoomSlider.getValue());
             }
@@ -82,6 +84,7 @@ public abstract class ControlPanel extends JPanel {
         longButton = createNewButton(Strings.STORAGE_LONG, group, worldPanel);
         arrayButton = createNewButton(Strings.STORAGE_ARRAY, group, worldPanel);
         agingButton = createNewButton(Strings.STORAGE_AGING, group, worldPanel);
+        hashButton = createNewButton(Strings.STORAGE_HASH, group, worldPanel);
         arrayButton.setSelected(true);
         add(Box.createVerticalStrut(10)); // add 10px of extra space
     }
@@ -94,6 +97,8 @@ public abstract class ControlPanel extends JPanel {
             result = new ArrayWorld(p.getWidth(), p.getHeight());
         } else if (agingButton.isSelected()) {
             result = new AgingWorld(p.getWidth(), p.getHeight());
+        } else if (hashButton.isSelected()) {
+            result = new HashWorld(p.getWidth(), p.getHeight());
         }
         if (result != null)
             p.initialise(result);
